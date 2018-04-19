@@ -15,7 +15,7 @@ pip install requests
 >>抓完包后记得关闭fiddler 因为证书问题 可能无法发送请求
 
 # 使用方法
-### 修改find-exam.json
+### 修改find-exam.json 
 抓包
 找到发往<p>https://www.qingsuyun.com/h5/actions/exam/execute/find-exam.json<p>的请求   
 在确认个人信息之后保存按钮会发这个请求   
@@ -31,6 +31,16 @@ python main.py
 # 你可以修改的配置 input.ini
 只有一个wait_time 设置延时 单位秒   
 不设置延时不确定会不会封 但是我在3点到4点一直狂答同一份试卷没有被封   
+
+# 可能的报错
+### UnicodeDecodeError
+find-exam.json编码集不是utf-8
+### SSLError
+证书问题 关闭fiddler4   
+fiddler4使用8888端口代理 requests自己一个证书 fiddler4一个证书 那就有冲突 (大概
+
+# 可能的BUG
+有个什么心连心的题啊 他答案是D我也选的D 还是说我错结果就99了 看人品
 
 # 感想
 题目是从服务器发至本地 每做一题都发一条请求到服务器上 进行存储判分   
