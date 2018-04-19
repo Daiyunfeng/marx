@@ -32,11 +32,8 @@ class AutoMarx:
             wait_time = 0
         self.wait_time = wait_time
         file = 'find-exam.json'
-        try:
-            self.content = json.load(open(file, encoding='utf-8'))
-        except:
-            print('find-exam.json 文件有错 意外结束')
-            exit(1)
+        self.content = json.load(open(file, encoding='utf-8'))
+
 
     def get_response_body(self, url):
         r = requests.get(url)
