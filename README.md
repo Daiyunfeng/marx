@@ -25,7 +25,7 @@ pip install requests
     * school 学校  
     * id 学号  
     * institute 学院  
-    * calss 班级  
+    * clss 班级  
 ### 运行
 ```
 python main.py
