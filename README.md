@@ -15,6 +15,7 @@ pip install requests
 ```
 
 # 使用方法
+### 先装好python3以上 然后通过命令行使用pip安装requests库
 ### 修改input.ini
 - init
     * wait_time 延时 单位s  
