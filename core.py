@@ -21,7 +21,7 @@ class AutoMarx:
             data['collections[0].answerContent'] = conf.get('user', 'username')
             data['collections[1].answerContent'] = conf.get('user', 'school')
         else:
-            data['paperId'] = 1803217583
+            data['paperId'] = 1803217582
             data['collections[0].answerContent'] = conf.get('user', 'username')
             data['collections[1].answerContent'] = conf.get('user', 'school')
             data['collections[2].answerContent'] = conf.get('user', 'id')
