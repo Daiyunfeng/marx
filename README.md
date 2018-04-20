@@ -17,14 +17,14 @@ pip install requests
 # 使用方法
 ### 修改input.ini
 - init
-   * wait_time 延时 单位s  
-   * type 0训练 1正式  
+    * wait_time 延时 单位s  
+    * type 0训练 1正式  
 - user
-   * username 姓名  
-   * school 学校  
-   * id 学号  
-   * institute 学院  
-   * calss 班级  
+    * username 姓名  
+    * school 学校  
+    * id 学号  
+    * institute 学院  
+    * calss 班级  
 ### 运行
 ```
 python main.py
