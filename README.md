@@ -1,6 +1,9 @@
 # 理想之光app卡尔马克思杯 自动答题
-直接发送请求进行答题 不设置延时大概需要10s完成
-在没遇到判题bug的话10s 100分非常的快乐
+直接发送请求进行答题 不设置延时大概需要4s完成  
+只需要修改配置文件添加必要信息 直接运行main.py 扫描二维码即可
+
+# 注意
+本来想着尽量不要作弊 发现大家都已经做完这次考试 就把源码的正式考试功能又改了回来
 
 # 运行环境
 #### Python版本
@@ -10,34 +13,26 @@
 ```
 pip install requests
 ```
-#### 抓包 任意
->我是用的 fiddler4 百度可以找到很多如何PC用fiddler抓取手机的包
->>抓完包后记得关闭fiddler 因为证书问题 可能无法发送请求
 
 # 使用方法
-### 修改find-exam.json 
-抓包
-找到发往<p>https://www.qingsuyun.com/h5/actions/exam/execute/find-exam.json<p>的请求   
-在确认个人信息之后保存按钮会发这个请求   
-将响应内容的json串复制到find-exam.json  注意UTF-8编码   
+### 修改input.ini
+- init
+   * wait_time 延时 单位s
+   * type 0训练 1正式
+- user
+   * username 姓名
+   * school 学校
+   * id 学号
+   * institute 学院
+   * calss 班级
 ### 运行
 ```
 python main.py
 ```
-会显示没有成功提交的题目的答案   
-如果显示全部成功 直接在手机上提交 虽然他会提示你只做了0题 但是实际在他们服务器上已经完全做好了   
-可以先练习测试一下   
-
-# 你可以修改的配置 input.ini
-只有一个wait_time 设置延时 单位秒   
-不设置延时不确定会不会封 但是我在3点到4点一直狂答同一份试卷没有被封   
+成功后扫描同目录下二维码
 
 # 可能的报错
-### UnicodeDecodeError
-find-exam.json编码集不是utf-8
-### SSLError
-证书问题 关闭fiddler4   
-fiddler4使用8888端口代理 requests自己一个证书 fiddler4一个证书 那就有冲突 (大概
+配置文件有错
 
 # 可能的BUG
 有个什么心连心的题啊 他答案是D我也选的D 还是说我错结果就99了 看人品
@@ -56,3 +51,7 @@ fiddler4使用8888端口代理 requests自己一个证书 fiddler4一个证书 �
    
 主要是写Java的 py代码没写过几行 写的很垃圾   
 (语言表达能力垃圾 还不肯用标点符号鶸   
+
+# 感想2
+很多人不抓包 就改了一个简单版本  
+之前想着对做过的人不公平 就悄悄让正式竞赛交不上去 实际好像都做了
