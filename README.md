@@ -10,8 +10,8 @@
 ```
 pip install requests
 ```
-#### 抓包
->fiddler4 百度可以找到很多如何PC用fiddler抓取手机的包
+#### 抓包 任意
+>我是用的 fiddler4 百度可以找到很多如何PC用fiddler抓取手机的包
 >>抓完包后记得关闭fiddler 因为证书问题 可能无法发送请求
 
 # 使用方法
