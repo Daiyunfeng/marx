@@ -6,37 +6,44 @@ from time import sleep
 
 class AutoMarx:
     def __init__(self):
-        ''' 甚至不需要伪装
-        conf = configparser.ConfigParser()
-        conf.read('input.ini')
-        hsid = conf.get('cookie', 'hsid')
-        if self.is_empty(hsid):
-            raise BaseException('input.ini is incomplete')
-        self.headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-            'Accept-Encoding': 'gzip, deflate,br',
-            'Accept-Language': 'zh-CN,en-US;q=0.9',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
-        }
-        self.cookies = {
-            'hsid': hsid
-        }
-        '''
 
         conf = configparser.ConfigParser()
         conf.read('input.ini')
         wait_time = conf.get('init', 'wait_time')
-        try:
-            wait_time = int(wait_time)
-        except:
-            wait_time = 0
+        wait_time = int(wait_time)
         self.wait_time = wait_time
-        file = 'find-exam.json'
-        self.content = json.load(open(file, encoding='utf-8'))
+        data = {
+            'startNow' : True
+        }
+        type = conf.get('init', 'type')
+        if type == 0:
+            data['paperId'] = 1803217583
+            data['collections[0].answerContent'] = conf.get('user', 'username')
+            data['collections[1].answerContent'] = conf.get('user', 'school')
+        else:
+            data['paperId'] = 1803217583
+            data['collections[0].answerContent'] = conf.get('user', 'username')
+            data['collections[1].answerContent'] = conf.get('user', 'school')
+            data['collections[2].answerContent'] = conf.get('user', 'id')
+            data['collections[3].answerContent'] = conf.get('user', 'institute')
+            data['collections[4].answerContent'] = conf.get('user', 'class')
+        url = 'https://www.qingsuyun.com/h5/actions/exam/execute/create-exam.json'
+        result = self.post_response_body(url, data)
+        self.answer_id = json.loads(result)['body']['answerId']
+        url = 'https://www.qingsuyun.com/h5/actions/exam/execute/find-exam.json?answerId=' + str(self.answer_id) + '&queryItems=true'
+        self.content = json.loads(self.get_response_body(url))
 
 
-    def get_response_body(self, url):
+    @staticmethod
+    # get
+    def get_response_body(url):
         r = requests.get(url)
+        return r.content.decode('UTF-8')
+
+    @staticmethod
+    # post
+    def post_response_body(url, data):
+        r = requests.post(url,data)
         return r.content.decode('UTF-8')
 
     @staticmethod
@@ -81,11 +88,22 @@ class AutoMarx:
             answer = [x['sortIndex'] for x in options if x['rightAnswers'] == True]
             res = self.submit_answer(answer_id,question_id,answer)
             if not res:
-                result['题目'+str(count)] = answer
-            else:
-                print('题' + str(count) + ' success')
+                result['题'+str(count)] = answer
             count = count+1
             sleep(self.wait_time)
         return result
 
-
+    def finish_exam(self):
+        url = 'https://www.qingsuyun.com/h5/actions/exam/execute/finish-exam.json?answerId=' + str(self.answer_id) + '&interrupt=false'
+        self.get_response_body(url)
+        result_url = 'https://www.qingsuyun.com/h5/actions/exam/execute/find-exam.json'
+        data = {
+            'queryItems' : False,
+            'queryScoreLevels' : True
+        }
+        data['answerId'] = self.answer_id
+        result = self.post_response_body(result_url, data)
+        query_code = json.loads(result)['body']['answerSheet']['queryCode']
+        query_image = requests.get('https://www.qingsuyun.com/h5/qrcode/link/detail/exam-result/107515/' + str(query_code) + '.png')
+        if query_image.status_code == 200:
+            open('result.png', 'wb').write(query_image.content)
