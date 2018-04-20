@@ -89,6 +89,8 @@ class AutoMarx:
             res = self.submit_answer(answer_id,question_id,answer)
             if not res:
                 result['Ã‚'+str(count)] = answer
+            else:
+                print('Ã‚'+str(count)+' success')
             count = count+1
             sleep(self.wait_time)
         return result
