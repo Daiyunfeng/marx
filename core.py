@@ -105,7 +105,19 @@ class AutoMarx:
         }
         data['answerId'] = self.answer_id
         result = self.post_response_body(result_url, data)
-        query_code = json.loads(result)['body']['answerSheet']['queryCode']
-        query_image = requests.get('https://www.qingsuyun.com/h5/qrcode/link/detail/exam-result/107515/' + str(query_code) + '.png')
-        if query_image.status_code == 200:
-            open('result.png', 'wb').write(query_image.content)
+        try:
+            data = json.loads(result)
+            factoryCode = data['body']['answerSheet']['factoryCode']
+            query_code = data['body']['answerSheet']['queryCode']
+            query_image = requests.get('https://www.qingsuyun.com/h5/qrcode/link/detail/exam-result/107515/' + str(query_code) + '.png')
+            if query_image.status_code == 200:
+                open('result.png', 'wb').write(query_image.content)
+        except BaseException as e:
+            print('Error',e)
+            print(result)
+            print('出了点小差错')
+            print('试卷id',self.answer_id)
+            url = result_url + '?queryItems=false&queryScoreLevels=true&answerId='+str(self.answer_id)
+            print('手动访问 ', url)
+            print('搜索factoryCode,queryCode值')
+            print('访问 https://www.qingsuyun.com/h5/qrcode/link/detail/exam-result/你的factoryCode/你的queryCode.png')
