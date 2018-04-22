@@ -8,7 +8,7 @@ class AutoMarx:
     def __init__(self):
 
         conf = configparser.ConfigParser()
-        conf.read('input.ini')
+        conf.read('input.ini',encoding="utf-8-sig")
         wait_time = conf.get('init', 'wait_time')
         wait_time = int(wait_time)
         self.wait_time = wait_time
